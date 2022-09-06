@@ -1,0 +1,23 @@
+import React from "react";
+import { useState, useEffect } from "react"
+import Table from 'react-bootstrap/Table'
+
+function Item(props) {
+  const [item, setItem] = useState([]);
+
+  console.log('https://balinona.synology.me/ebay/api_movie_detail.php?id='+props.match.params.id);  
+  useEffect(() => {
+        fetch('https://balinona.synology.me/ebay/api_movie_detail.php?id='+props.match.params.id)
+        .then(response => response.json())
+        .then(data => setItem(data))
+      },[props])
+    
+    return (
+      <div className="eBay">
+          {item.overview}
+      </div>
+    );
+  }
+  
+  export default Item;
+  
