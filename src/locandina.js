@@ -26,10 +26,7 @@ function Locandina(props) {
           </Card.Body>
         </Col>
         <Col xs="col-md-auto" className="p-3 mr-3">
-          <Carousel
-            images={props.item.annunci.map(a => a.image_link)}
-            alts={props.item.annunci.map(a => `${a.site} ${a.valuta} ${a.prezzo} ${a.data_inizio}`)} >
-          </Carousel>
+          <Carousel annunci={props.item.annunci}></Carousel>
         </Col>
       </Row>
     </Card>

@@ -14,31 +14,50 @@ function Carousel(props) {
         setIsViewerOpen(false);
     };
 
+    const images = props.annunci.map(a => a.image_link)
+    const alts = props.annunci.map(a => `${a.site} ${a.valuta} ${a.prezzo} ${a.data_inizio}`)
+    const site = props.annunci.map(a => `${a.site}`)
+    const price = props.annunci.map(a => `${a.valuta} ${a.prezzo}`)
+
+    const divStyle = {
+        display: 'inline-block'
+    };
     return (
         <div>
-            {props.images.map((src, index) => (
-                <img
-                    src={src}
-                    onClick={() => openImageViewer(index)}
-                    width="150"
-                    key={index}
-                    style={{ margin: "2px" }}
-                    alt={props.alts[index]}
-                    title={props.alts[index]}
-                />
+            {images.map((src, index) => (
+                <div style={divStyle}>
+                    <img
+                        src={src}
+                        onClick={() => openImageViewer(index)}
+                        width="150"
+                        key={index}
+                        style={{ margin: "2px" }}
+                        alt={alts[index]}
+                        title={alts[index]}
+                    />
+                    <div>{site[index]}</div>
+                    <div>{price[index]}</div>
+                    <div>EDIT</div>
+
+                    <div>{/*alts[index]*/}</div>
+                </div>
+
             ))}
 
             {isViewerOpen && (
-                <ImageViewer
-                    src={props.images}
-                    currentIndex={currentImage}
-                    onClose={closeImageViewer}
-                    disableScroll={false}
-                    backgroundStyle={{
-                        backgroundColor: "rgba(0,0,0,0.9)"
-                    }}
-                    closeOnClickOutside={true}
-                />
+                <>
+                    <ImageViewer
+                        src={images}
+                        currentIndex={currentImage}
+                        onClose={closeImageViewer}
+                        disableScroll={false}
+                        backgroundStyle={{
+                            backgroundColor: "rgba(0,0,0,0.9)"
+                        }}
+                        closeOnClickOutside={true}
+                    ></ImageViewer>
+
+                </>
             )}
         </div>
     );
