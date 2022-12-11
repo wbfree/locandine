@@ -9,6 +9,7 @@ import Items from './Items';
 import Item from './Item';
 import Search from './Search';
 import Dashboard from './Dashboard';
+import Bind from './Bind';
 
 function App() {
 	const [selection, setSelection] = useState([]);
@@ -33,6 +34,7 @@ function App() {
         <Route path="/all"><Items url='https://balinona.synology.me/locandine_backend/db_test.php?type=all'/></Route>
         <Route path="/search" component={Search} />
         <Route path="/item/:id" component={Item} />
+        <Route path="/bind/:group/:id" component={Bind} />
         <Route exact path="/"><Dashboard/></Route>
       </Router>
     </div>
