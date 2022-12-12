@@ -42,7 +42,7 @@ function Bind(props) {
         data.galleryURLBig = data.galleryURL.replace("s-l500", "s-l1600");
         return setAnnuncio(data)
       })
-  }, [props.match.params])
+  }, [])
 
   useEffect(() => {
     console.log('render movies')
@@ -60,12 +60,6 @@ function Bind(props) {
         .then(data => setEdizioni(data))
   }, [selectedMovie])
 
-  function handleChoose(index) {
-    /*setSelectedMovie(index)*/
-    console.log(index)
-
-  }
-
   return (
     <div className="p-3 App-body">
       <Card className="mb-3 bg-dark text-white">
@@ -73,8 +67,11 @@ function Bind(props) {
         <Card.Body>
           <Card.Text>
             <div class="row">
-              <div class="lcolumn">annuncio?<ItemEbay annuncio={annuncio}></ItemEbay></div>
-              <div class="rcolumn">sss</div>
+              <div class="lcolumn"><ItemEbay annuncio={annuncio}></ItemEbay></div>
+              <div class="rcolumn">{edizioni.map((edizione,index) => (
+                <div>{edizione.edizione}</div>
+
+              ))}</div>
             </div>
           </Card.Text>
         </Card.Body>
@@ -91,7 +88,7 @@ function Bind(props) {
         <tbody>
           {movies.map((item, index) => (
             <tr>
-              <td><a href="#" onClick={handleChoose(index)}>{item.idmovie}</a></td>
+              <td><a href="#" onClick={() => setSelectedMovie(item.tmdb)}>{item.tmdb}</a></td>
               <td>{item.title}</td>
               <td>{item.score}</td>
             </tr>
