@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import Card from 'react-bootstrap/Card'
 import Table from 'react-bootstrap/Table'
 import ReactImageMagnify from 'react-image-magnify';
+import Button from 'react-bootstrap/Button'
 
 import './Bind.css';
 
@@ -33,7 +34,7 @@ function Bind(props) {
   const [selectedMovie, setSelectedMovie] = useState(0);
   const [edizioni, setEdizioni] = useState([]);
 
-  useEffect(() => {
+  const fetchAnnuncio = () => {
     console.log('render annunci')
     fetch('https://balinona.synology.me/ebay/ebay.php?id=' + props.match.params.id + '&group=' + props.match.params.group)
       .then(response => response.json())
@@ -42,28 +43,34 @@ function Bind(props) {
         data.galleryURLBig = data.galleryURL.replace("s-l500", "s-l1600");
         return setAnnuncio(data)
       })
-  }, [])
+  }
+  useEffect(fetchAnnuncio, [props.match.params])
 
-  useEffect(() => {
+  const fetchMovies = (title) => {
     console.log('render movies')
-    if (annuncio.title)
-      fetch('https://balinona.synology.me/locandine_backend/db_test.php?query=' + annuncio.title)
+    if (title)
+      fetch('https://balinona.synology.me/locandine_backend/db_test.php?query=' + title)
         .then(response => response.json())
         .then(data => setMovies(data))
-  }, [annuncio.title])
+  }
+  useEffect( () => fetchMovies(annuncio.title), [annuncio.title])
 
-  useEffect(() => {
+  const fetchEdizioni = () => {
     console.log('render edizioni')
     if (selectedMovie > 0)
       fetch('https://balinona.synology.me/locandine_backend/locandine.php?id2=' + selectedMovie)
         .then(response => response.json())
         .then(data => setEdizioni(data))
-  }, [selectedMovie])
+  }
+  useEffect(fetchEdizioni, [selectedMovie])
 
   return (
     <div className="p-3 App-body">
       <Card className="mb-3 bg-dark text-white">
-        <Card.Header as="h5">{annuncio.title}</Card.Header>
+        <Card.Header as="h5">{annuncio.title}&nbsp;
+        <Button variant="success" onClick={() => fetchMovies(window.getSelection().toString())}>Rebind</Button>
+        </Card.Header>
+
         <Card.Body>
           <Card.Text>
             <div class="row">
