@@ -6,28 +6,65 @@ import ReactImageMagnify from 'react-image-magnify';
 
 import './Bind.css';
 
+function ItemEbay(props) {
+  return (
+    <div className="fluid">
+      <ReactImageMagnify {...{
+        smallImage: {
+          alt: 'Wristwatch by Ted Baker London',
+          isFluidWidth: true,
+          src: props.annuncio.galleryURL,
+        },
+        largeImage: {
+          src: props.annuncio.galleryURLBig,
+          width: 800,
+          height: 1800
+        },
+        enlargedImagePosition: 'over'
+      }} />
+    </div>
+  )
+}
+
+
 function Bind(props) {
   const [annuncio, setAnnuncio] = useState([]);
+  const [movies, setMovies] = useState([]);
+  const [selectedMovie, setSelectedMovie] = useState(0);
+  const [edizioni, setEdizioni] = useState([]);
 
   useEffect(() => {
+    console.log('render annunci')
     fetch('https://balinona.synology.me/ebay/ebay.php?id=' + props.match.params.id + '&group=' + props.match.params.group)
       .then(response => response.json())
       .then(data => {
         data.galleryURL = data.galleryURL.replace("s-l140", "s-l500");
         data.galleryURLBig = data.galleryURL.replace("s-l500", "s-l1600");
         return setAnnuncio(data)
-      });
-  }, [])
-
-  const [items, setItems] = useState([]);
+      })
+  }, [props.match.params])
 
   useEffect(() => {
-    fetch('https://balinona.synology.me/locandine_backend/db_test.php?query=' + annuncio.title)
-      .then(response => response.json())
-      .then(data => setItems(data));
-  }, [annuncio])
+    console.log('render movies')
+    if (annuncio.title)
+      fetch('https://balinona.synology.me/locandine_backend/db_test.php?query=' + annuncio.title)
+        .then(response => response.json())
+        .then(data => setMovies(data))
+  }, [annuncio.title])
 
-  //const imgLink = () => annuncio.galleryURL.replace("s-l140", "s-l1600");
+  useEffect(() => {
+    console.log('render edizioni')
+    if (selectedMovie > 0)
+      fetch('https://balinona.synology.me/locandine_backend/locandine.php?id2=' + selectedMovie)
+        .then(response => response.json())
+        .then(data => setEdizioni(data))
+  }, [selectedMovie])
+
+  function handleChoose(index) {
+    /*setSelectedMovie(index)*/
+    console.log(index)
+
+  }
 
   return (
     <div className="p-3 App-body">
@@ -35,42 +72,26 @@ function Bind(props) {
         <Card.Header as="h5">{annuncio.title}</Card.Header>
         <Card.Body>
           <Card.Text>
-            <div className="fluid">
-              <div className="fluid__image-container">
-                <ReactImageMagnify {...{
-                  smallImage: {
-                    alt: 'Wristwatch by Ted Baker London',
-                    isFluidWidth: true,
-                    src: annuncio.galleryURL,
-                  },
-                  largeImage: {
-                    src: annuncio.galleryURLBig,
-                    width: 800,
-                    height: 1800
-                  },
-                  enlargedImagePosition: 'over'
-                }} />
-              </div></div>
+            <div class="row">
+              <div class="lcolumn">annuncio?<ItemEbay annuncio={annuncio}></ItemEbay></div>
+              <div class="rcolumn">sss</div>
+            </div>
           </Card.Text>
-
         </Card.Body>
       </Card>
-
-
-
 
       <Table striped bordered hover size="sm" variant="dark">
         <thead>
           <tr>
             <th>Id</th>
             <th>Movie</th>
-            <th>Movie</th>
+            <th>Score</th>
           </tr>
         </thead>
         <tbody>
-          {items.map((item, index) => (
+          {movies.map((item, index) => (
             <tr>
-              <td>{item.idmovie}</td>
+              <td><a href="#" onClick={handleChoose(index)}>{item.idmovie}</a></td>
               <td>{item.title}</td>
               <td>{item.score}</td>
             </tr>
