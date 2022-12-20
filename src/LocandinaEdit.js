@@ -31,7 +31,7 @@ function LocandinaEdit(props) {
     const postOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ item })
+      body: JSON.stringify({ ...item })
     };
     fetch(getUrl(), postOptions)
       .then(response => response.json())
@@ -46,7 +46,7 @@ function LocandinaEdit(props) {
       const postOptions = {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ item })
+        body: JSON.stringify({ ...item })
       };
       fetch(getUrl(), postOptions)
         .then(response => response.json())
