@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Locandina from './locandina'
 import Card from 'react-bootstrap/Card'
 import Spinner from 'react-bootstrap/Spinner'
@@ -7,34 +8,29 @@ import Spinner from 'react-bootstrap/Spinner'
 function Item(props) {
   const [item_it, setItem_it] = useState([]);
   const [items_db, setItems_db] = useState([]);
-  const hasFetchedInfo = useRef(false);
-  const hasFetchedLocandine = useRef(false);
 
-  const refetchLocandine = () => {
-    fetch('https://balinona.synology.me/locandine_backend/locandine.php?id=' + props.match.params.id)
+  const fetchInfo = useCallback(() => {
+    fetch('https://balinona.synology.me/locandine_backend/api_movie_detail.php?lang=it-IT&id=' + props.match.params.id)
       .then(response => response.json())
-      .then(data => setItems_db(data), hasFetchedLocandine.current = true);
-  }
+      .then(data => setItem_it(data));
+  })
+
+  const fetchLocandine = useCallback(() => {
+    fetch('https://balinona.synology.me/locandine_backend/locandine.php?id2=' + props.match.params.id)
+      .then(response => response.json())
+      .then(data => setItems_db(data));
+  })
 
   useEffect(() => {
-    if (!hasFetchedInfo.current) {
-      fetch('https://balinona.synology.me/locandine_backend/api_movie_detail.php?lang=it-IT&id=' + props.match.params.id)
-        .then(response => response.json())
-        .then(data => setItem_it(data), hasFetchedInfo.current = true);
-    }
-
-    if (!hasFetchedLocandine.current) {
-      fetch('https://balinona.synology.me/locandine_backend/locandine.php?id2=' + props.match.params.id)
-        .then(response => response.json())
-        .then(data => setItems_db(data), hasFetchedLocandine.current = true);
-    }
-  }, [props])
+    fetchInfo();
+    fetchLocandine();
+  }, [])
 
   const emptyItem = {
     anno: null,
     anno_da: null,
     idedizione: 0,
-    idillustratore: 1,
+    idillustratore: 0,
     idmovie: props.match.params.id,
     idtipografica: null,
     tipo: null,
@@ -53,9 +49,9 @@ function Item(props) {
         </Card.Footer>
       </Card>
       {(items_db.length)
-        ? items_db.map((item_db, index) => (<Locandina item={item_db} onReload={refetchLocandine} />))
+        ? items_db.map((item_db, index) => (<Locandina item={item_db} onReload={fetchLocandine} />))
         : <Spinner animation="border" role="status" />}
-      <Locandina item={emptyItem} onReload={refetchLocandine} />
+      <Locandina item={emptyItem} onReload={fetchLocandine} />
 
     </div>
   );
