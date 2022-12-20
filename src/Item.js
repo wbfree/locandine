@@ -49,8 +49,8 @@ function Item(props) {
         </Card.Footer>
       </Card>
       {(items_db.length)
-        ? items_db.map((item_db, index) => (<Locandina item={item_db} onReload={fetchLocandine} />))
-        : <Spinner animation="border" role="status" />}
+        && items_db.map((item_db, index) => (<Locandina item={item_db} onReload={fetchLocandine} />))
+        }
       <Locandina item={emptyItem} onReload={fetchLocandine} />
 
     </div>
