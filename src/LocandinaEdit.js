@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { useState } from "react"
 import Modal from 'react-bootstrap/Modal'
@@ -6,12 +7,14 @@ import Form from 'react-bootstrap/Form'
 
 function LocandinaEdit(props) {
 
+  const backendHost = 'https://balinona.synology.me/locandine_backend/'
+
   const [show, setShow] = useState(false);
   const [item, setItem] = useState([]);
 
   const handleClose = () => setShow(false);
   const getUrl = () => {
-    return 'https://balinona.synology.me/locandine_backend/api.php?table=_edizioni&id=' + props.item.idedizione;
+    return backendHost + 'api.php?table=_edizioni&id=' + props.item.idedizione;
   }
 
   const handleNew = () => {
@@ -77,21 +80,21 @@ function LocandinaEdit(props) {
               </Form.Control>
               {/*<Form.Control type="text" placeholder="tipo edizione" Value={item.tipo} onChange={(event) => { item.tipo = event.target.value }} />*/}
               <Form.Label>Anno Da</Form.Label>
-              <Form.Control type="text" placeholder="anno da" Value={item.anno_da} onChange={(event) => { item.anno_da = event.target.value }} />
+              <Form.Control type="text" placeholder="anno da" value={item.anno_da} onChange={(event) => { item.anno_da = event.target.value }} />
               <Form.Label>Anno A</Form.Label>
-              <Form.Control type="text" placeholder="anno a" Value={item.anno_a} onChange={(event) => { item.anno_a = event.target.value }} />
+              <Form.Control type="text" placeholder="anno a" value={item.anno_a} onChange={(event) => { item.anno_a = event.target.value }} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Versione</Form.Label>
-              <Form.Control type="text" placeholder="versione" Value={item.versione} onChange={(event) => { item.versione = event.target.value }} />
+              <Form.Control type="text" placeholder="versione" value={item.versione} onChange={(event) => { item.versione = event.target.value }} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Tipografica</Form.Label>
-              <Form.Control type="text" placeholder="tipografica" Value={item.idtipografica} onChange={(event) => { item.idtipografica = event.target.value }} />
+              <Form.Control type="text" placeholder="tipografica" value={item.idtipografica} onChange={(event) => { item.idtipografica = event.target.value }} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Autore</Form.Label>
-              <Form.Control type="text" placeholder="autore" Value={item.idillustratore} onChange={(event) => { item.idillustratore = event.target.value }} />
+              <Form.Control type="text" placeholder="autore" value={item.idillustratore} onChange={(event) => { item.idillustratore = event.target.value }} />
             </Form.Group>
           </Form>
 

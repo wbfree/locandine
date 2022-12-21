@@ -1,5 +1,5 @@
-import React from "react";
 import { useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
 import Card from 'react-bootstrap/Card'
 import Table from 'react-bootstrap/Table'
 import ReactImageMagnify from 'react-image-magnify';
@@ -34,9 +34,11 @@ function Bind(props) {
   const [selectedMovie, setSelectedMovie] = useState(0);
   const [edizioni, setEdizioni] = useState([]);
 
+  let { group, id } = useParams();
+
   const fetchAnnuncio = () => {
     console.log('render annunci')
-    fetch('https://balinona.synology.me/ebay/ebay.php?id=' + props.match.params.id + '&group=' + props.match.params.group)
+    fetch('https://balinona.synology.me/ebay/ebay.php?id=' + id + '&group=' + group)
       .then(response => response.json())
       .then(data => {
         data.galleryURL = data.galleryURL.replace("s-l140", "s-l500");
@@ -44,7 +46,7 @@ function Bind(props) {
         return setAnnuncio(data)
       })
   }
-  useEffect(fetchAnnuncio, [props.match.params])
+  useEffect(fetchAnnuncio, [group, id])
 
   const fetchMovies = (title) => {
     console.log('render movies')
@@ -53,7 +55,7 @@ function Bind(props) {
         .then(response => response.json())
         .then(data => setMovies(data))
   }
-  useEffect( () => fetchMovies(annuncio.title), [annuncio.title])
+  useEffect(() => fetchMovies(annuncio.title), [annuncio.title])
 
   const fetchEdizioni = () => {
     console.log('render edizioni')
@@ -68,14 +70,14 @@ function Bind(props) {
     <div className="p-3 App-body">
       <Card className="mb-3 bg-dark text-white">
         <Card.Header as="h5">{annuncio.title}&nbsp;
-        <Button variant="success" onClick={() => fetchMovies(window.getSelection().toString())}>Rebind</Button>
+          <Button variant="success" onClick={() => fetchMovies(window.getSelection().toString())}>Rebind</Button>
         </Card.Header>
 
         <Card.Body>
           <Card.Text>
             <div class="row">
               <div class="lcolumn"><ItemEbay annuncio={annuncio}></ItemEbay></div>
-              <div class="rcolumn">{edizioni.map((edizione,index) => (
+              <div class="rcolumn">{edizioni.map((edizione, index) => (
                 <div>{edizione.edizione}</div>
 
               ))}</div>

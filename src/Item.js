@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { useState, useEffect, useCallback } from "react"
+import { useParams } from "react-router-dom"
 import Locandina from './locandina'
 import Card from 'react-bootstrap/Card'
 import LocandinaEdit from './LocandinaEdit'
@@ -9,21 +10,24 @@ function Item(props) {
   const [item_it, setItem_it] = useState([]);
   const [items_db, setItems_db] = useState([]);
   const [item_empty, setItem_empty] = useState([]);
+  let { id } = useParams();
+
+  const backendHost = 'https://balinona.synology.me/locandine_backend/'
 
   const fetchInfo = useCallback(() => {
-    fetch('https://balinona.synology.me/locandine_backend/api_movie_detail.php?lang=it-IT&id=' + props.match.params.id)
+    fetch(backendHost + 'api_movie_detail.php?lang=it-IT&id=' + id)
       .then(response => response.json())
       .then(data => setItem_it(data));
   })
 
   const fetchLocandine = useCallback(() => {
-    fetch('https://balinona.synology.me/locandine_backend/locandine.php?id2=' + props.match.params.id)
+    fetch(backendHost + 'locandine.php?id2=' + id)
       .then(response => response.json())
       .then(data => setItems_db(data));
   })
 
   const fetchLocandineNew = useCallback(() => {
-    fetch('https://balinona.synology.me/locandine_backend/locandine.php?idn=' + props.match.params.id)
+    fetch(backendHost + 'locandine.php?idn=' + id)
       .then(response => response.json())
       .then(data => setItem_empty(data));
   })
