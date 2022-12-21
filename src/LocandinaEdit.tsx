@@ -4,13 +4,16 @@ import { useState } from "react"
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
+import { _Component } from './_component'
+import _API from './api'
 
-function LocandinaEdit(props) {
+function LocandinaEdit(props: any) {
+  console.log(new _API().GetIllustartori())
 
   const backendHost = 'https://balinona.synology.me/locandine_backend/'
 
-  const [show, setShow] = useState(false);
-  const [item, setItem] = useState([]);
+  const [show, setShow] = useState<boolean>(false);
+  const [item, setItem] = useState<any>([]);
 
   const handleClose = () => setShow(false);
   const getUrl = () => {

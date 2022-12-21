@@ -2,12 +2,11 @@ import React from "react";
 import Card from 'react-bootstrap/Card'
 import { Row, Col } from 'react-bootstrap';
 import Carousel from './Carousel'
-
 import 'react-medium-image-zoom/dist/styles.css'
-
 import LocandinaEdit from './LocandinaEdit'
+import { _Component } from './_component'
 
-function Locandina(props) {
+function Locandina(props: any) {
 
   return (
     <Card className="mb-3 bg-dark text-white">
@@ -22,7 +21,7 @@ function Locandina(props) {
             <Card.Text><LocandinaEdit item={props.item} onReload={props.onReload} /></Card.Text>
           </Card.Body>
         </Col>
-        <Col xs="col-md-auto" className="p-3 mr-3">
+        <Col className="p-3 mr-3">
           {props.item.annunci && <Carousel annunci={props.item.annunci}></Carousel>}
         </Col>
       </Row>

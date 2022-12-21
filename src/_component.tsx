@@ -12,7 +12,7 @@ export class _Component<Type> {
     protected setter: React.Dispatch<React.SetStateAction<Type>>;
 
     constructor(refObj: Type, storageName: string = "") {
-        const [value, setter] = _useState(refObj);
+        const [value, setter] = _useState<any>(refObj);
         this.value = value;
         this.setter = setter;
         if (storageName !== "") this.SetStorage(storageName);
@@ -41,6 +41,10 @@ export class _Component<Type> {
             (_Component._storage.get(storageName) as _Component<Type>) ||
             new _Component<string>("_unknown storage <" + storageName + ">")
         );
+    }
+
+    static HasStorage(storageName: string): boolean {
+        return _Component._storage.has(storageName)
     }
 }
 
