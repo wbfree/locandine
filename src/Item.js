@@ -3,11 +3,12 @@ import React from "react";
 import { useState, useEffect, useCallback } from "react"
 import Locandina from './locandina'
 import Card from 'react-bootstrap/Card'
-import Spinner from 'react-bootstrap/Spinner'
+import LocandinaEdit from './LocandinaEdit'
 
 function Item(props) {
   const [item_it, setItem_it] = useState([]);
   const [items_db, setItems_db] = useState([]);
+  const [item_empty, setItem_empty] = useState([]);
 
   const fetchInfo = useCallback(() => {
     fetch('https://balinona.synology.me/locandine_backend/api_movie_detail.php?lang=it-IT&id=' + props.match.params.id)
@@ -21,21 +22,18 @@ function Item(props) {
       .then(data => setItems_db(data));
   })
 
+  const fetchLocandineNew = useCallback(() => {
+    fetch('https://balinona.synology.me/locandine_backend/locandine.php?idn=' + props.match.params.id)
+      .then(response => response.json())
+      .then(data => setItem_empty(data));
+  })
+
   useEffect(() => {
     fetchInfo();
     fetchLocandine();
+    fetchLocandineNew();
   }, [])
 
-  const emptyItem = {
-    anno: null,
-    anno_da: null,
-    idedizione: 0,
-    idillustratore: 0,
-    idmovie: props.match.params.id,
-    idtipografica: null,
-    tipo: null,
-    versione: null
-  }
   return (
     <div className="p-3 App-body">
       <Card className="mb-3 bg-dark text-white">
@@ -45,13 +43,14 @@ function Item(props) {
           <Card.Text>Data: {item_it.release_date}</Card.Text>
         </Card.Body>
         <Card.Footer>
+          <Card.Text><LocandinaEdit item={item_empty} onReload={fetchLocandine} /></Card.Text>
+
           {/*<small className="text-muted">Last updated 3 mins ago</small>*/}
         </Card.Footer>
       </Card>
       {(items_db.length)
         && items_db.map((item_db, index) => (<Locandina item={item_db} onReload={fetchLocandine} />))
-        }
-      <Locandina item={emptyItem} onReload={fetchLocandine} />
+      }
 
     </div>
   );

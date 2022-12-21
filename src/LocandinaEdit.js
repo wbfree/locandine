@@ -58,7 +58,7 @@ function LocandinaEdit(props) {
     <>
       {props.item.idedizione > 0 && <Button variant="primary" onClick={handleShow}>Edit</Button>}&nbsp;
       {props.item.idedizione > 0 && <Button variant="danger" onClick={handleDelete}>Delete</Button>}&nbsp;
-      {props.item.idedizione === 0 && <Button variant="success" onClick={handleNew}>New</Button>}
+      {props.item.idedizione === "0" && <Button variant="success" onClick={handleNew}>New</Button>}
 
       <Modal show={show} onHide={handleClose} animation={true}>
         <Modal.Header closeButton>
