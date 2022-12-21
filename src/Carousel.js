@@ -25,7 +25,7 @@ function Carousel(props) {
     return (
         <div>
             {images.map((src, index) => (
-                <div style={divStyle}>
+                <div key={index} style={divStyle}>
                     <img
                         src={src}
                         onClick={() => openImageViewer(index)}

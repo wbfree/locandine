@@ -49,7 +49,7 @@ function Item(props) {
         </Card.Footer>
       </Card>
       {(items_db.length)
-        && items_db.map((item_db, index) => (<Locandina item={item_db} onReload={fetchLocandine} />))
+        && items_db.map((item_db, index) => (<Locandina key={index} item={item_db} onReload={fetchLocandine} />))
       }
 
     </div>
