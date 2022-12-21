@@ -5,12 +5,14 @@ import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import { _Component } from './_component'
-import _API from './api'
 
 function LocandinaEdit(props: any) {
-  console.log(new _API().GetIllustartori())
 
   const backendHost = 'https://balinona.synology.me/locandine_backend/'
+
+  //if (_Component.HasStorage('illustratori'))
+  //console.log(_Component.GetStorage('illustratori').Get())
+
 
   const [show, setShow] = useState<boolean>(false);
   const [item, setItem] = useState<any>([]);

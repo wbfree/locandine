@@ -4,7 +4,6 @@ import { Row, Col } from 'react-bootstrap';
 import Carousel from './Carousel'
 import 'react-medium-image-zoom/dist/styles.css'
 import LocandinaEdit from './LocandinaEdit'
-import { _Component } from './_component'
 
 function Locandina(props: any) {
 
