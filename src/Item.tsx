@@ -15,8 +15,11 @@ function Item(props :any) {
 
   const backendHost = 'https://balinona.synology.me/locandine_backend/'
 
-  const componentAPI = new _ComponentAPI(
-    new Object(), backendHost+'api.php?table=_illustratori', 'illustratori'
+  new _ComponentAPI(
+    new Array(), backendHost+'api.php?table=_illustratori&order=nome', 'illustratori'
+  );
+  new _ComponentAPI(
+    new Array(), backendHost+'api.php?table=_tipografiche&order=nome', 'tipografiche'
   );
 
 

@@ -10,8 +10,8 @@ function LocandinaEdit(props: any) {
 
   const backendHost = 'https://balinona.synology.me/locandine_backend/'
 
-  //if (_Component.HasStorage('illustratori'))
-  //console.log(_Component.GetStorage('illustratori').Get())
+  const illustratori :any = _Component.GetStorage('illustratori').Get();
+  const tipografiche :any = _Component.GetStorage('tipografiche').Get();
 
 
   const [show, setShow] = useState<boolean>(false);
@@ -83,7 +83,6 @@ function LocandinaEdit(props: any) {
                 <option value="riedizione">Riedizione</option>
                 <option value="sconosciuto">Sconosciuto</option>
               </Form.Control>
-              {/*<Form.Control type="text" placeholder="tipo edizione" Value={item.tipo} onChange={(event) => { item.tipo = event.target.value }} />*/}
               <Form.Label>Anno Da</Form.Label>
               <Form.Control type="text" placeholder="anno da" value={item.anno_da} onChange={(event) => { item.anno_da = event.target.value }} />
               <Form.Label>Anno A</Form.Label>
@@ -95,11 +94,19 @@ function LocandinaEdit(props: any) {
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Tipografica</Form.Label>
-              <Form.Control type="text" placeholder="tipografica" value={item.idtipografica} onChange={(event) => { item.idtipografica = event.target.value }} />
+              <Form.Control as="select" value={item.idtipografica} onChange={(event) => { item.idtipografica = event.target.value }}>
+                {Array.isArray(tipografiche) && tipografiche.map((tipografica: any, index: any) =>
+                (<option key={index} value={tipografica.idtipografica}>{tipografica.nome}</option>))
+                }
+              </Form.Control>
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Autore</Form.Label>
-              <Form.Control type="text" placeholder="autore" value={item.idillustratore} onChange={(event) => { item.idillustratore = event.target.value }} />
+              <Form.Control as="select" value={item.idillustratore} onChange={(event) => { item.idillustratore = event.target.value }}>
+                {Array.isArray(illustratori) && illustratori.map((illustratore: any, index: any) =>
+                (<option key={index} value={illustratore.idillustratore}>{illustratore.nome}</option>))
+                }
+              </Form.Control>
             </Form.Group>
           </Form>
 
