@@ -91,7 +91,7 @@ function Bind(props) {
                   </Button><br /><br /></>
               ))}
               </div>
-              <div class="rcolumn">{annunci && <Carousel annunci={annunci}></Carousel>}</div>
+              <div class="rcolumn">{annunci && <Carousel annunci={annunci} edizioni={edizioni}></Carousel>}</div>
             </div>
           </Card.Text>
         </Card.Body>

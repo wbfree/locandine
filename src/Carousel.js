@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
 import ImageViewer from "react-simple-image-viewer";
+import AnnuncioEdit from "./AnnuncioEdit";
 
 function Carousel(props) {
     const [currentImage, setCurrentImage] = useState(0);
@@ -13,7 +14,7 @@ function Carousel(props) {
         setCurrentImage(0);
         setIsViewerOpen(false);
     };
-
+    const idimages = props.annunci.map(a => a.idimage)
     const images = props.annunci.map(a => a.image_link)
     const alts = props.annunci.map(a => `${a.site} ${a.valuta} ${a.prezzo} ${a.data_inizio}`)
     const site = props.annunci.map(a => `${a.site}`)
@@ -37,7 +38,7 @@ function Carousel(props) {
                     />
                     <div>{site[index]}</div>
                     <div>{price[index]}</div>
-                    <div>EDIT</div>
+                    <div><AnnuncioEdit idimage={idimages[index]} edizioni={props.edizioni} /></div>
 
                     <div>{/*alts[index]*/}</div>
                 </div>
