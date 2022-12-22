@@ -68,6 +68,11 @@ function Bind(props) {
   }
   useEffect(fetchEdizioni, [selectedMovie])
 
+  const selectMovie = (tmdb) => {
+    setSelectedMovie(tmdb)
+    setAnnunci([])
+  }
+
   return (
     <div className="p-3 App-body">
       <Card className="mb-3 bg-dark text-white">
@@ -104,7 +109,7 @@ function Bind(props) {
           {movies.map((item, index) => (
             <tr>
               <td>
-                <Button variant="primary" size="sm" onClick={() => setSelectedMovie(item.tmdb)}>
+                <Button variant="primary" size="sm" onClick={() => selectMovie(item.tmdb)}>
                   Select
                 </Button>&nbsp;
                 <Button variant="info" size="sm" href={'/item/' + item.tmdb} target='_blank' rel='noreferrer'>
