@@ -4,48 +4,32 @@ import { useState, useEffect, useCallback } from "react"
 import { useParams } from "react-router-dom"
 import Locandina from './locandina'
 import Card from 'react-bootstrap/Card'
-import { _ComponentAPI } from './_component'
 import LocandinaEdit from './LocandinaEdit'
 
-function Item(props :any) {
-  const [item_it, setItem_it] = useState<any>([]);
-  const [items_db, setItems_db] = useState<any>([]);
-  const [item_empty, setItem_empty] = useState<any>([]);
-  let { id } = useParams();
+function useStateApi(path: string) {
 
   const backendHost = 'https://balinona.synology.me/locandine_backend/'
+  const [item, setItem] = useState<any>([]);
 
-  new _ComponentAPI(
-    new Array(), backendHost+'api.php?table=_illustratori&order=nome', 'illustratori'
-  );
-  new _ComponentAPI(
-    new Array(), backendHost+'api.php?table=_tipografiche&order=nome', 'tipografiche'
-  );
-
-
-  const fetchInfo = useCallback(() => {
-    fetch(backendHost + 'api_movie_detail.php?lang=it-IT&id=' + id)
+  const fetchItems = useCallback(() => {
+    fetch(backendHost + path)
       .then(response => response.json())
-      .then(data => setItem_it(data));
-  },[])
-
-  const fetchLocandine = useCallback(() => {
-    fetch(backendHost + 'locandine.php?id2=' + id)
-      .then(response => response.json())
-      .then(data => setItems_db(data));
-  },[])
-
-  const fetchLocandineNew = useCallback(() => {
-    fetch(backendHost + 'locandine.php?idn=' + id)
-      .then(response => response.json())
-      .then(data => setItem_empty(data));
-  },[])
+      .then(data => setItem(data));
+  }, [])
 
   useEffect(() => {
-    fetchInfo();
-    fetchLocandine();
-    fetchLocandineNew();
+    fetchItems();
   }, [])
+
+  return [item, fetchItems]
+}
+
+function Item(props: any) {
+
+  let { id } = useParams();
+  const [item_it] = useStateApi('api_movie_detail.php?lang=it-IT&id=' + id);
+  const [items_db, fetchLocandine] = useStateApi('locandine.php?id2=' + id);
+  const [item_empty] = useStateApi('locandine.php?idn=' + id);
 
   return (
     <div className="p-3 App-body">

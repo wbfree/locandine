@@ -1,26 +1,38 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
-import { useState } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
-import { _Component } from './_component'
+
+function useStateApiLazy(path: string, show: boolean) {
+  const backendHost = 'https://balinona.synology.me/locandine_backend/'
+  const [item, setItem] = useState<any>([]);
+
+  const fetchItems = useCallback(() => {
+    if (show)
+      fetch(backendHost + path)
+        .then(response => response.json())
+        .then(data => setItem(data));
+  }, [show])
+
+  useEffect(() => {
+    fetchItems();
+  }, [show])
+
+  return [item, fetchItems]
+}
+
 
 function LocandinaEdit(props: any) {
 
-  const backendHost = 'https://balinona.synology.me/locandine_backend/'
-
-  const illustratori :any = _Component.GetStorage('illustratori').Get();
-  const tipografiche :any = _Component.GetStorage('tipografiche').Get();
-
-
   const [show, setShow] = useState<boolean>(false);
+  const [illustratori] = useStateApiLazy('api.php?table=_illustratori&order=nome', show);
+  const [tipografiche] = useStateApiLazy('api.php?table=_tipografiche&order=nome', show);
   const [item, setItem] = useState<any>([]);
 
   const handleClose = () => setShow(false);
-  const getUrl = () => {
-    return backendHost + 'api.php?table=_edizioni&id=' + props.item.idedizione;
-  }
+  const url = 'https://balinona.synology.me/locandine_backend/api.php?table=_edizioni&id=' + props.item.idedizione;
 
   const handleNew = () => {
     console.log(props.item)
@@ -28,7 +40,7 @@ function LocandinaEdit(props: any) {
 
   }
   const handleShow = () => {
-    fetch(getUrl())
+    fetch(url)
       .then(response => response.json())
       .then(data => { setItem(data[0]); setShow(true) })
   }
@@ -41,7 +53,7 @@ function LocandinaEdit(props: any) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...item })
     };
-    fetch(getUrl(), postOptions)
+    fetch(url, postOptions)
       .then(response => response.json())
       .then(data => props.onReload());
   }
@@ -56,7 +68,7 @@ function LocandinaEdit(props: any) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...item })
       };
-      fetch(getUrl(), postOptions)
+      fetch(url, postOptions)
         .then(response => response.json())
         .then(data => props.onReload());
     }
@@ -96,7 +108,7 @@ function LocandinaEdit(props: any) {
               <Form.Label>Tipografica</Form.Label>
               <Form.Control as="select" value={item.idtipografica} onChange={(event) => { item.idtipografica = event.target.value }}>
                 {Array.isArray(tipografiche) && tipografiche.map((tipografica: any, index: any) =>
-                (<option key={index} value={tipografica.idtipografica}>{tipografica.nome}</option>))
+                  (<option key={index} value={tipografica.idtipografica}>{tipografica.nome}</option>))
                 }
               </Form.Control>
             </Form.Group>
@@ -104,7 +116,7 @@ function LocandinaEdit(props: any) {
               <Form.Label>Autore</Form.Label>
               <Form.Control as="select" value={item.idillustratore} onChange={(event) => { item.idillustratore = event.target.value }}>
                 {Array.isArray(illustratori) && illustratori.map((illustratore: any, index: any) =>
-                (<option key={index} value={illustratore.idillustratore}>{illustratore.nome}</option>))
+                  (<option key={index} value={illustratore.idillustratore}>{illustratore.nome}</option>))
                 }
               </Form.Control>
             </Form.Group>
