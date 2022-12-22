@@ -78,8 +78,7 @@ function Bind(props) {
             <div class="row">
               <div class="lcolumn"><ItemEbay annuncio={annuncio}></ItemEbay></div>
               <div class="rcolumn">{edizioni.map((edizione, index) => (
-                <div>{edizione.edizione}</div>
-
+                <div key={index}>{edizione.edizione}</div>
               ))}</div>
             </div>
           </Card.Text>
@@ -91,15 +90,22 @@ function Bind(props) {
           <tr>
             <th>Id</th>
             <th>Movie</th>
-            <th>Score</th>
+            <th>Edizioni</th>
           </tr>
         </thead>
         <tbody>
           {movies.map((item, index) => (
             <tr>
-              <td><a href="#" onClick={() => setSelectedMovie(item.tmdb)}>{item.tmdb}</a></td>
+              <td>
+                <Button variant="primary" size="sm" onClick={() => setSelectedMovie(item.tmdb)}>
+                  Select
+                </Button>&nbsp;
+                <Button variant="info" size="sm" href={'/item/' + item.tmdb} target='_blank' rel='noreferrer'>
+                  Link
+                </Button>
+              </td>
               <td>{item.title}</td>
-              <td>{item.score}</td>
+              <td>{item.edizioni}</td>
             </tr>
           ))}
         </tbody>
