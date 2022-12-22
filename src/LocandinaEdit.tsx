@@ -96,13 +96,13 @@ function LocandinaEdit(props: any) {
                 <option value="sconosciuto">Sconosciuto</option>
               </Form.Control>
               <Form.Label>Anno Da</Form.Label>
-              <Form.Control type="text" placeholder="anno da" value={item.anno_da} onChange={(event) => { item.anno_da = event.target.value }} />
+              <Form.Control type="text" placeholder="anno da" defaultValue={item.anno_da} onChange={(event) => { item.anno_da = event.target.value }} />
               <Form.Label>Anno A</Form.Label>
-              <Form.Control type="text" placeholder="anno a" value={item.anno_a} onChange={(event) => { item.anno_a = event.target.value }} />
+              <Form.Control type="text" placeholder="anno a" defaultValue={item.anno_a} onChange={(event) => { item.anno_a = event.target.value }} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Versione</Form.Label>
-              <Form.Control type="text" placeholder="versione" value={item.versione} onChange={(event) => { item.versione = event.target.value }} />
+              <Form.Control type="text" placeholder="versione" defaultValue={item.versione} onChange={(event) => { item.versione = event.target.value }} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Tipografica</Form.Label>
