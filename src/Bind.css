@@ -19,6 +19,10 @@
 
 .lcolumn {
   flex: 20%;
-}.rcolumn {
-  flex: 80%;
+}
+.ccolumn {
+  flex: 20%;
+}
+.rcolumn {
+  flex: 60%;
 }

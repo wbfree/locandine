@@ -4,6 +4,7 @@ import Card from 'react-bootstrap/Card'
 import Table from 'react-bootstrap/Table'
 import ReactImageMagnify from 'react-image-magnify';
 import Button from 'react-bootstrap/Button'
+import Carousel from './Carousel'
 
 import './Bind.css';
 
@@ -33,6 +34,7 @@ function Bind(props) {
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(0);
   const [edizioni, setEdizioni] = useState([]);
+  const [annunci, setAnnunci] = useState([]);
 
   let { group, id } = useParams();
 
@@ -77,9 +79,14 @@ function Bind(props) {
           <Card.Text>
             <div class="row">
               <div class="lcolumn"><ItemEbay annuncio={annuncio}></ItemEbay></div>
-              <div class="rcolumn">{edizioni.map((edizione, index) => (
-                <div key={index}>{edizione.edizione}</div>
-              ))}</div>
+              <div class="ccolumn">{edizioni.map((edizione, index) => (
+                <>
+                  <Button key={index} variant="info" size="sm" onClick={() => setAnnunci(edizione.annunci)}>
+                    <>{edizione.edizione}<br />{edizione.autore}<br />{edizione.tipografica}<br />{edizione.info}</>
+                  </Button><br /><br /></>
+              ))}
+              </div>
+              <div class="rcolumn">{annunci && <Carousel annunci={annunci}></Carousel>}</div>
             </div>
           </Card.Text>
         </Card.Body>
