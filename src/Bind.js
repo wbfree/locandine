@@ -32,9 +32,10 @@ function ItemEbay(props) {
 function Bind(props) {
   const [annuncio, setAnnuncio] = useState([]);
   const [movies, setMovies] = useState([]);
-  const [selectedMovie, setSelectedMovie] = useState(0);
   const [edizioni, setEdizioni] = useState([]);
-  const [annunci, setAnnunci] = useState([]);
+
+  const [selectedMovie, setSelectedMovie] = useState(0);
+  const [selectedEdizione, setSelectedEdizione] = useState([]);
 
   let { group, id } = useParams();
 
@@ -69,8 +70,9 @@ function Bind(props) {
   useEffect(fetchEdizioni, [selectedMovie])
 
   const selectMovie = (tmdb) => {
+    setEdizioni([])
+    setSelectedEdizione([])
     setSelectedMovie(tmdb)
-    setAnnunci([])
   }
 
   return (
@@ -86,12 +88,12 @@ function Bind(props) {
               <div class="lcolumn"><ItemEbay annuncio={annuncio}></ItemEbay></div>
               <div class="ccolumn">{edizioni.map((edizione, index) => (
                 <>
-                  <Button key={index} variant="info" size="sm" onClick={() => setAnnunci(edizione.annunci)}>
+                  <Button key={index} variant="info" size="sm" onClick={() => setSelectedEdizione(edizione)}>
                     <>{edizione.edizione}<br />{edizione.autore}<br />{edizione.tipografica}<br />{edizione.info}</>
                   </Button><br /><br /></>
               ))}
               </div>
-              <div class="rcolumn">{annunci && <Carousel annunci={annunci} ></Carousel>}</div>
+              <div class="rcolumn">{selectedEdizione && <Carousel edizione={selectedEdizione} ></Carousel>}</div>
             </div>
           </Card.Text>
         </Card.Body>

@@ -24,10 +24,9 @@ function useStateApiLazy(path: string, show: boolean) {
   }
   
   function AnnuncioEdit(props: any) {
-
     const [show, setShow] = useState<boolean>(false);
     const [edizioni] = useStateApiLazy('api.php?proc=_edizioni_from_idimage('+props.idimage+')', show);
-    const [idedizione, setIdEdizione] = useState<any>();
+    const [idedizione, setIdedizione] = useState<any>(props.idedizione);
 
     const handleClose = () => setShow(false);
     const url = 'https://balinona.synology.me/locandine_backend/api.php?table=_images&id=' + props.idimage;
@@ -46,7 +45,7 @@ function useStateApiLazy(path: string, show: boolean) {
         };
         fetch(url, postOptions)
             .then(response => response.json())
-            .then(data => props.onReload());
+            .then(data => console.log(data));
     }
 
     return (
@@ -55,16 +54,16 @@ function useStateApiLazy(path: string, show: boolean) {
 
             <Modal show={show} onHide={handleClose} animation={true}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Edit edizione {props.idimage}</Modal.Title>
+                    <Modal.Title>Edit edizione {props.idedizione}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
 
                     <Form>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                             <Form.Label>Edizioni</Form.Label>
-                            <Form.Control as="select" value={idedizione} onChange={(event) => { setIdEdizione(event.target.value) }}>
-                                {Array.isArray(edizioni) && edizioni.map((edizione: any, index: any) =>
-                                    (<option key={index} value={edizione.idedizione}>{edizione.tipo} - {edizione.versione}</option>))
+                            <Form.Control as="select" value={props.idedizione} onChange={(event) => { setIdedizione(event.target.value) }}>
+                                {edizioni && edizioni.map((edizione: any, index: any) =>
+                                    (<option key={index} value={edizione.idedizione}>{edizione.tipo} {edizione.versione}</option>))
                                 }
                             </Form.Control>
                         </Form.Group>

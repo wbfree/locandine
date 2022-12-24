@@ -6,7 +6,6 @@ import 'react-medium-image-zoom/dist/styles.css'
 import LocandinaEdit from './LocandinaEdit'
 
 function Locandina(props: any) {
-
   return (
     <Card className="mb-3 bg-dark text-white">
       <Row>
@@ -21,7 +20,7 @@ function Locandina(props: any) {
           </Card.Body>
         </Col>
         <Col className="p-3 mr-3">
-          {props.item.annunci && <Carousel annunci={props.item.annunci}></Carousel>}
+          <Carousel edizione={props.item}></Carousel>
         </Col>
       </Row>
     </Card>

@@ -14,18 +14,19 @@ function Carousel(props) {
         setCurrentImage(0);
         setIsViewerOpen(false);
     };
-    const idimages = props.annunci.map(a => a.idimage)
-    const images = props.annunci.map(a => a.image_link)
-    const alts = props.annunci.map(a => `${a.site} ${a.valuta} ${a.prezzo} ${a.data_inizio}`)
-    const site = props.annunci.map(a => `${a.site}`)
-    const price = props.annunci.map(a => `${a.valuta} ${a.prezzo}`)
+    
+    const idimages = props.edizione.annunci?.map(a => a.idimage)
+    const images = props.edizione.annunci?.map(a => a.image_link)
+    const alts = props.edizione.annunci?.map(a => `${a.site} ${a.valuta} ${a.prezzo} ${a.data_inizio}`)
+    const site = props.edizione.annunci?.map(a => `${a.site}`)
+    const price = props.edizione.annunci?.map(a => `${a.valuta} ${a.prezzo}`)
 
     const divStyle = {
         display: 'inline-block'
     };
     return (
         <div>
-            {images.map((src, index) => (
+            {images?.map((src, index) => (
                 <div key={index} style={divStyle}>
                     <img
                         src={src}
@@ -37,8 +38,8 @@ function Carousel(props) {
                         title={alts[index]}
                     />
                     <div>{site[index]}</div>
-                    <div>{price[index]}</div>
-                    <div><AnnuncioEdit idimage={idimages[index]} edizioni={props.edizioni} /></div>
+                    <div>{price[index]} - {props.edizione.idedizione}</div>
+                    <div><AnnuncioEdit idimage={idimages[index]} idedizione={props.edizione.idedizione} /></div>
 
                     <div>{/*alts[index]*/}</div>
                 </div>
