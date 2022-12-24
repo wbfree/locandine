@@ -73,14 +73,14 @@ function Bind(props) {
     setSelectedMovie(tmdb)
   }
 
-  const handleBind = () => {
+  const handleBind = (edizione) => {
     const postOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
         "itemId": annuncio.itemId,
-        "idmovie": selectedEdizione.idmovie,
-        "idedizione" : selectedEdizione.idedizione, 
+        "idmovie": edizione.idmovie,
+        "idedizione" : edizione.idedizione, 
         "currentPrice": annuncio.sellingStatus.currentPrice,
         "galleryURL": annuncio.galleryURLBig,
         "endTime": annuncio.listingInfo.startTime,
@@ -111,9 +111,7 @@ function Bind(props) {
                     <>{edizione.edizione}<br />{edizione.autore}<br />{edizione.tipografica}<br />{edizione.info}</>
                   </Button>
                   
-                  <Button key={index} variant="success" size="sm" onClick={() => handleBind()}>
-                  Bind
-                  </Button>
+                  {(selectedEdizione && <Button key={index} variant="success" size="sm" onClick={() => handleBind(selectedEdizione)}>Bind</Button>)}
                   <br /><br /></>
               ))}
               </div>
