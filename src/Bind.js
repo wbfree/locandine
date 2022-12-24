@@ -40,19 +40,18 @@ function Bind(props) {
   let { group, id } = useParams();
 
   const fetchAnnuncio = () => {
-    console.log('render annunci')
     fetch('https://balinona.synology.me/ebay/ebay.php?id=' + id + '&group=' + group)
       .then(response => response.json())
       .then(data => {
         data.galleryURL = data.galleryURL.replace("s-l140", "s-l500");
         data.galleryURLBig = data.galleryURL.replace("s-l500", "s-l1600");
+        console.log(data)
         return setAnnuncio(data)
       })
   }
   useEffect(fetchAnnuncio, [group, id])
 
   const fetchMovies = (title) => {
-    console.log('render movies')
     if (title)
       fetch('https://balinona.synology.me/locandine_backend/db_test.php?query=' + title)
         .then(response => response.json())
@@ -61,7 +60,6 @@ function Bind(props) {
   useEffect(() => fetchMovies(annuncio.title), [annuncio.title])
 
   const fetchEdizioni = () => {
-    console.log('render edizioni')
     if (selectedMovie > 0)
       fetch('https://balinona.synology.me/locandine_backend/locandine.php?id2=' + selectedMovie)
         .then(response => response.json())
@@ -75,6 +73,27 @@ function Bind(props) {
     setSelectedMovie(tmdb)
   }
 
+  const handleBind = () => {
+    const postOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        "itemId": annuncio.itemId,
+        "idmovie": selectedEdizione.idmovie,
+        "idedizione" : selectedEdizione.idedizione, 
+        "currentPrice": annuncio.sellingStatus.currentPrice,
+        "galleryURL": annuncio.galleryURLBig,
+        "endTime": annuncio.listingInfo.startTime,
+        "startTime": annuncio.listingInfo.endTime
+      })
+    };
+    fetch('https://balinona.synology.me/locandine_backend/scrapy_to_db_class_ebay.php', postOptions)
+      .then(response => response.json())
+      .then(data => console.log(data));
+
+  }
+
+
   return (
     <div className="p-3 App-body">
       <Card className="mb-3 bg-dark text-white">
@@ -84,16 +103,21 @@ function Bind(props) {
 
         <Card.Body>
           <Card.Text>
-            <div class="row">
-              <div class="lcolumn"><ItemEbay annuncio={annuncio}></ItemEbay></div>
-              <div class="ccolumn">{edizioni.map((edizione, index) => (
+            <div className="row">
+              <div className="lcolumn"><ItemEbay annuncio={annuncio}></ItemEbay></div>
+              <div className="ccolumn">{edizioni.map((edizione, index) => (
                 <>
                   <Button key={index} variant="info" size="sm" onClick={() => setSelectedEdizione(edizione)}>
                     <>{edizione.edizione}<br />{edizione.autore}<br />{edizione.tipografica}<br />{edizione.info}</>
-                  </Button><br /><br /></>
+                  </Button>
+                  
+                  <Button key={index} variant="success" size="sm" onClick={() => handleBind()}>
+                  Bind
+                  </Button>
+                  <br /><br /></>
               ))}
               </div>
-              <div class="rcolumn">{selectedEdizione && <Carousel edizione={selectedEdizione} ></Carousel>}</div>
+              <div className="rcolumn">{selectedEdizione && <Carousel edizione={selectedEdizione} ></Carousel>}</div>
             </div>
           </Card.Text>
         </Card.Body>
@@ -109,7 +133,7 @@ function Bind(props) {
         </thead>
         <tbody>
           {movies.map((item, index) => (
-            <tr>
+            <tr key={index}>
               <td>
                 <Button variant="primary" size="sm" onClick={() => selectMovie(item.tmdb)}>
                   Select
