@@ -45,7 +45,7 @@ function Bind(props) {
       .then(data => {
         data.galleryURL = data.galleryURL.replace("s-l140", "s-l500");
         data.galleryURLBig = data.galleryURL.replace("s-l500", "s-l1600");
-        console.log(data)
+        //console.log(data)
         return setAnnuncio(data)
       })
   }
@@ -94,25 +94,24 @@ function Bind(props) {
     }
   }
 
-
-
   const handleBind = (edizione) => {
+    const post_data = {
+      "itemId": annuncio.itemId,
+      "idmovie": edizione.idmovie,
+      "idedizione": edizione.idedizione,
+      "currentPrice": annuncio.sellingStatus.currentPrice,
+      "galleryURL": annuncio.galleryURLBig,
+      "endTime": annuncio.listingInfo.startTime,
+      "startTime": annuncio.listingInfo.endTime
+    }
     const postOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        "itemId": annuncio.itemId,
-        "idmovie": edizione.idmovie,
-        "idedizione": edizione.idedizione,
-        "currentPrice": annuncio.sellingStatus.currentPrice,
-        "galleryURL": annuncio.galleryURLBig,
-        "endTime": annuncio.listingInfo.startTime,
-        "startTime": annuncio.listingInfo.endTime
-      })
+      body: JSON.stringify(post_data)
     };
     fetch('https://balinona.synology.me/locandine_backend/scrapy_to_db_class_ebay.php', postOptions)
       .then(response => response.json())
-      .then(data => console.log(data));
+      .then(data => alert(JSON.stringify(data, null, 2)));
 
   }
 
@@ -149,6 +148,7 @@ function Bind(props) {
           <tr>
             <th>Id</th>
             <th>Movie</th>
+            <th>Year</th>
             <th>Edizioni</th>
           </tr>
         </thead>
@@ -164,6 +164,7 @@ function Bind(props) {
                 </Button>
               </td>
               <td>{item.title}</td>
+              <td>{item.anno}</td>
               <td>{item.edizioni}</td>
             </tr>
           ))}
