@@ -89,7 +89,7 @@ function LocandinaEdit(props: any) {
           <Form>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Edizione</Form.Label>
-              <Form.Control as="select" value={item.tipo} onChange={(event) => { item.tipo = event.target.value }}>
+              <Form.Control as="select" defaultValue={item.tipo} onChange={(event) => { item.tipo = event.target.value }}>
                 <option value="prima edizione">Prima edizione</option>
                 <option value="ristampa">Ristampa</option>
                 <option value="riedizione">Riedizione</option>
@@ -106,7 +106,7 @@ function LocandinaEdit(props: any) {
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Tipografica</Form.Label>
-              <Form.Control as="select" value={item.idtipografica} onChange={(event) => { item.idtipografica = event.target.value }}>
+              <Form.Control as="select" defaultValue={item.idtipografica} onChange={(event) => { item.idtipografica = event.target.value }}>
                 {Array.isArray(tipografiche) && tipografiche.map((tipografica: any, index: any) =>
                   (<option key={index} value={tipografica.idtipografica}>{tipografica.nome}</option>))
                 }
