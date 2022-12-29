@@ -61,7 +61,7 @@ function useStateApiLazy(path: string, show: boolean) {
                     <Form>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                             <Form.Label>Edizioni</Form.Label>
-                            <Form.Control as="select" value={props.idedizione} onChange={(event) => { setIdedizione(event.target.value) }}>
+                            <Form.Control as="select" defaultValue={props.idedizione} onChange={(event) => { setIdedizione(event.target.value) }}>
                                 {edizioni && edizioni.map((edizione: any, index: any) =>
                                     (<option key={index} value={edizione.idedizione}>{edizione.tipo} {edizione.versione}</option>))
                                 }
