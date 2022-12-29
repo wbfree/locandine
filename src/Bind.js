@@ -67,20 +67,43 @@ function Bind(props) {
   }
   useEffect(fetchEdizioni, [selectedMovie])
 
-  const selectMovie = (tmdb) => {
-    setEdizioni([])
-    setSelectedEdizione([])
-    setSelectedMovie(tmdb)
+  const selectMovie = (item) => {
+    if (item.edizioni === '0') {
+      const postOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          idmovie: item.idmovie,
+          tipo: 0,
+          anno_da: parseInt(item.anno)
+        })
+      };
+      fetch('https://balinona.synology.me/locandine_backend/api.php?table=_edizioni', postOptions)
+        .then(response => response.json())
+        .then(data => {
+          setEdizioni([])
+          setSelectedEdizione([])
+          setSelectedMovie(item.tmdb)
+
+        });
+    }
+    else {
+      setEdizioni([])
+      setSelectedEdizione([])
+      setSelectedMovie(item.tmdb)
+    }
   }
+
+
 
   const handleBind = (edizione) => {
     const postOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
+      body: JSON.stringify({
         "itemId": annuncio.itemId,
         "idmovie": edizione.idmovie,
-        "idedizione" : edizione.idedizione, 
+        "idedizione": edizione.idedizione,
         "currentPrice": annuncio.sellingStatus.currentPrice,
         "galleryURL": annuncio.galleryURLBig,
         "endTime": annuncio.listingInfo.startTime,
@@ -110,7 +133,7 @@ function Bind(props) {
                   <Button key={index} variant="info" size="sm" onClick={() => setSelectedEdizione(edizione)}>
                     <>{edizione.edizione}<br />{edizione.autore}<br />{edizione.tipografica}<br />{edizione.info}</>
                   </Button>
-                  
+
                   {(selectedEdizione && <Button key={index} variant="success" size="sm" onClick={() => handleBind(selectedEdizione)}>Bind</Button>)}
                   <br /><br /></>
               ))}
@@ -133,7 +156,7 @@ function Bind(props) {
           {movies.map((item, index) => (
             <tr key={index}>
               <td>
-                <Button variant="primary" size="sm" onClick={() => selectMovie(item.tmdb)}>
+                <Button variant="primary" size="sm" onClick={() => selectMovie(item)}>
                   Select
                 </Button>&nbsp;
                 <Button variant="info" size="sm" href={'/item/' + item.tmdb} target='_blank' rel='noreferrer'>
