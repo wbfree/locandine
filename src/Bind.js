@@ -108,7 +108,10 @@ function Bind(props) {
     };
     fetch('https://balinona.synology.me/locandine_backend/scrapy_to_db_class_ebay.php', postOptions)
       .then(response => response.json())
-      .then(data => alert(JSON.stringify(data, null, 2)));
+      .then(data => {
+        alert(JSON.stringify(data, null, 2))
+        //setSelectedEdizione(selectedEdizione)
+      });
 
   }
 
@@ -130,7 +133,7 @@ function Bind(props) {
                     <>{edizione.edizione}<br />{edizione.info}</>
                   </Button>
 
-                  {(selectedEdizione && <Button key={index} variant="success" size="sm" onClick={() => handleBind(selectedEdizione)}>Bind</Button>)}
+                  {(selectedEdizione.idedizione && <Button key={index} variant="success" size="sm" onClick={() => handleBind(selectedEdizione)}>Bind</Button>)}
                   <br /><br /></>
               ))}
               </div>
