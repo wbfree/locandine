@@ -114,7 +114,7 @@ function LocandinaEdit(props: any) {
             </Form.Group>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
               <Form.Label>Autore</Form.Label>
-              <Form.Control as="select" value={item.idillustratore} onChange={(event) => { item.idillustratore = event.target.value }}>
+              <Form.Control as="select" defaultValue={item.idillustratore} onChange={(event) => { item.idillustratore = event.target.value }}>
                 {Array.isArray(illustratori) && illustratori.map((illustratore: any, index: any) =>
                   (<option key={index} value={illustratore.idillustratore}>{illustratore.nome}</option>))
                 }
