@@ -140,7 +140,7 @@ function Bind(props) {
                     <>{edizione.edizione}<br />{edizione.info}</>
                   </Button>
 
-                  {(selectedEdizione.idedizione && <Button variant="success" size="sm" onClick={() => handleBind(selectedEdizione)}>Bind</Button>)}
+                  {(selectedEdizione.idedizione === edizione.idedizione && <Button variant="success" size="sm" onClick={() => handleBind(selectedEdizione)}>Bind</Button>)}
                   <br /><br />
                 </div>
               ))}
