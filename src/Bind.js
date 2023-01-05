@@ -110,11 +110,18 @@ function Bind(props) {
       .then(response => response.json())
       .then(data => {
         alert(JSON.stringify(data, null, 2))
-        //setSelectedEdizione(selectedEdizione)
+        fetchEdizioni()
       });
 
   }
 
+  useEffect(() => {
+    edizioni.map((edizione) => {
+      if (edizione.idedizione === selectedEdizione.idedizione)
+        setSelectedEdizione(edizione)
+      return []
+    })
+  }, [edizioni, selectedEdizione.idedizione])
 
   return (
     <div className="p-3 App-body">
@@ -128,13 +135,14 @@ function Bind(props) {
             <div className="row">
               <div className="lcolumn"><ItemEbay annuncio={annuncio}></ItemEbay></div>
               <div className="ccolumn">{edizioni.map((edizione, index) => (
-                <>
-                  <Button key={index} variant="info" size="sm" onClick={() => setSelectedEdizione(edizione)}>
+                <div key={index} >
+                  <Button variant="info" size="sm" onClick={() => setSelectedEdizione(edizione)}>
                     <>{edizione.edizione}<br />{edizione.info}</>
                   </Button>
 
-                  {(selectedEdizione.idedizione && <Button key={index} variant="success" size="sm" onClick={() => handleBind(selectedEdizione)}>Bind</Button>)}
-                  <br /><br /></>
+                  {(selectedEdizione.idedizione && <Button variant="success" size="sm" onClick={() => handleBind(selectedEdizione)}>Bind</Button>)}
+                  <br /><br />
+                </div>
               ))}
               </div>
               <div className="rcolumn">{selectedEdizione && <Carousel edizione={selectedEdizione} ></Carousel>}</div>
