@@ -8,24 +8,24 @@ import Form from 'react-bootstrap/Form'
 function useStateApiLazy(path: string, show: boolean) {
     const backendHost = 'https://balinona.synology.me/locandine_backend/'
     const [item, setItem] = useState<any>([]);
-  
+
     const fetchItems = useCallback(() => {
-      if (show)
-        fetch(backendHost + path)
-          .then(response => response.json())
-          .then(data => setItem(data));
+        if (show)
+            fetch(backendHost + path)
+                .then(response => response.json())
+                .then(data => setItem(data));
     }, [show])
-  
+
     useEffect(() => {
-      fetchItems();
+        fetchItems();
     }, [show])
-  
+
     return [item, fetchItems]
-  }
-  
-  function AnnuncioEdit(props: any) {
+}
+
+function AnnuncioEdit(props: any) {
     const [show, setShow] = useState<boolean>(false);
-    const [edizioni] = useStateApiLazy('api.php?proc=_edizioni_from_idimage('+props.idimage+')', show);
+    const [edizioni] = useStateApiLazy('api.php?proc=_edizioni_from_idimage(' + props.idimage + ')', show);
     const [idedizione, setIdedizione] = useState<any>(props.idedizione);
 
     const handleClose = () => setShow(false);
@@ -61,9 +61,9 @@ function useStateApiLazy(path: string, show: boolean) {
                     <Form>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                             <Form.Label>Edizioni</Form.Label>
-                            <Form.Control as="select" defaultValue={props.idedizione} onChange={(event) => { setIdedizione(event.target.value) }}>
+                            <Form.Control as="select" value={idedizione} onChange={(event) => { setIdedizione(event.target.value) }}>
                                 {edizioni && edizioni.map((edizione: any, index: any) =>
-                                    (<option key={index} value={edizione.idedizione}>{edizione.tipo} {edizione.versione}</option>))
+                                    (<option key={index} value={edizione.idedizione}>{edizione.tipo} {edizione.versione} {edizione.tipografica ?? ''}</option>))
                                 }
                             </Form.Control>
                         </Form.Group>
