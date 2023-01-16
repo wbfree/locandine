@@ -59,6 +59,13 @@ function Bind(props) {
   }
   useEffect(() => fetchMovies(annuncio.title), [annuncio.title])
 
+  const fetchMoviesTMDB = (title) => {
+    if (title)
+      fetch('https://balinona.synology.me/locandine_backend/api_movie.php?qs=' + title)
+        .then(response => response.json())
+        .then(data => setMovies(data))
+  }
+
   const fetchEdizioni = () => {
     if (selectedMovie > 0)
       fetch('https://balinona.synology.me/locandine_backend/locandine.php?id2=' + selectedMovie)
@@ -127,7 +134,7 @@ function Bind(props) {
     <div className="p-3 App-body">
       <Card className="mb-3 bg-dark text-white">
         <Card.Header as="h5">{annuncio.title}&nbsp;
-          <Button variant="success" onClick={() => fetchMovies(window.getSelection().toString())}>Rebind</Button>
+          <Button variant="success" onClick={() => fetchMoviesTMDB(window.getSelection().toString())}>Rebind</Button>
         </Card.Header>
 
         <Card.Body>
