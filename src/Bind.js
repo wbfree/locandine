@@ -106,7 +106,8 @@ function Bind(props) {
       "currentPrice": annuncio.sellingStatus.currentPrice,
       "galleryURL": annuncio.galleryURLBig,
       "endTime": annuncio.listingInfo.startTime,
-      "startTime": annuncio.listingInfo.endTime
+      "startTime": annuncio.listingInfo.endTime,
+      "source": annuncio.source
     }
     const postOptions = {
       method: 'POST',
