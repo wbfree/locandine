@@ -1,9 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
-import { useState, useCallback, useEffect } from "react"
+import { useRef, useState, useCallback, useEffect } from "react"
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
+import ReactCrop, { type Crop } from 'react-image-crop'
+import 'react-image-crop/dist/ReactCrop.css'
 
 function useStateApiLazy(path: string, show: boolean) {
     const backendHost = 'https://balinona.synology.me/locandine_backend/'
@@ -21,6 +23,37 @@ function useStateApiLazy(path: string, show: boolean) {
     }, [show])
 
     return [item, fetchItems]
+}
+
+function ImageEdit(props: any) {
+    const [crop, setCrop] = useState<Crop>({
+        unit: '%', // Can be 'px' or '%'
+        x: 25,
+        y: 5,
+        width: 50,
+        height: 90
+    })
+
+    const imageRef = useRef<HTMLImageElement>(null)
+    const [croppedImageUrl, setCroppedImageUrl] = useState(null);
+
+    const onCropComplete = (crop: any) => {
+    };
+
+    const src = 'https://fantautosoft.altervista.org/locandine/4283e47e50d7d556768dd379ecfd09428724fd53.jpg'
+
+    return (
+        <>
+            <ReactCrop
+                crop={crop}
+                onChange={c => setCrop(c)}
+                onComplete={onCropComplete}>
+
+                <img ref={imageRef} src={src} />
+            </ReactCrop>
+        </>
+    )
+
 }
 
 function AnnuncioEdit(props: any) {
@@ -68,6 +101,7 @@ function AnnuncioEdit(props: any) {
                             </Form.Control>
                         </Form.Group>
                     </Form>
+                    <ImageEdit />
 
                 </Modal.Body>
                 <Modal.Footer>
@@ -82,5 +116,6 @@ function AnnuncioEdit(props: any) {
         </>
     );
 }
+
 
 export default AnnuncioEdit;
