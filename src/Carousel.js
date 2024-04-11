@@ -14,7 +14,7 @@ function Carousel(props) {
         setCurrentImage(0);
         setIsViewerOpen(false);
     };
-    
+
     const idimages = props.edizione.annunci?.map(a => a.idimage)
     const images = props.edizione.annunci?.map(a => a.image_link)
     const alts = props.edizione.annunci?.map(a => `${a.site} ${a.valuta} ${a.prezzo} ${a.data_inizio}`)
@@ -39,7 +39,7 @@ function Carousel(props) {
                     />
                     <div>{site[index]}</div>
                     <div>{price[index]} - {props.edizione.idedizione}</div>
-                    <div><AnnuncioEdit idimage={idimages[index]} idedizione={props.edizione.idedizione} /></div>
+                    <div><AnnuncioEdit idimage={idimages[index]} idedizione={props.edizione.idedizione} image_link={images[index]} /></div>
 
                     <div>{/*alts[index]*/}</div>
                 </div>

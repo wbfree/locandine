@@ -27,41 +27,21 @@ function useStateApiLazy(path: string, show: boolean) {
 }
 
 function ImageEdit(props: any) {
-    const [crop, setCrop] = useState<Crop>({
-        unit: '%', // Can be 'px' or '%'
-        x: 25,
-        y: 5,
-        width: 50,
-        height: 90
-    })
+    const [crop, setCrop] = useState<Crop>()
+    useEffect(() => {
+        props.setCropSelection(undefined)
+    }, [])
 
     const imageRef = useRef<HTMLImageElement>(null)
-    const [imageSrc, setImageSrc] = useState('https://fantautosoft.altervista.org/locandine/4283e47e50d7d556768dd379ecfd09428724fd53.jpg')
-
-    const handleSubmit = (crop: PixelCrop, percentCrop: PercentCrop) => {
-        const postOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ crop: percentCrop })
-        };
-        fetch(backendHost + '/api.php?crop=xxxxx', postOptions)
-            .then(response => response.json())
-            .then(data => {
-                setImageSrc('https://balinona.synology.me/locandine_backend/example-cropped.jpg')
-                console.log(data)
-            })
-
-
-    };
 
     return (
         <>
             <ReactCrop
                 crop={crop}
-                onChange={c => setCrop(c)}
-                onComplete={handleSubmit}>
+                onChange={crop => setCrop(crop)}
+                onComplete={(crop: PixelCrop, percentCrop: PercentCrop) => props.setCropSelection(percentCrop)}>
 
-                <img ref={imageRef} src={imageSrc} />
+                <img ref={imageRef} src={props.imageSrc} />
             </ReactCrop>
         </>
     )
@@ -73,13 +53,12 @@ function AnnuncioEdit(props: any) {
     const [edizioni] = useStateApiLazy('api.php?proc=_edizioni_from_idimage(' + props.idimage + ')', show);
     const [idedizione, setIdedizione] = useState<any>(props.idedizione);
 
-    const handleClose = () => setShow(false);
+    const [cropSelecion, setCropSelection] = useState<Crop>()
+
     const url = 'https://balinona.synology.me/locandine_backend/api.php?table=_images&id=' + props.idimage;
 
-    const handleShow = () => {
-        setShow(true)
-    }
-
+    const handleShow = () => setShow(true)
+    const handleClose = () => setShow(false);
     const handleSubmit = () => {
         // Simple POST request with a JSON body using fetch
         setShow(false);
@@ -91,7 +70,24 @@ function AnnuncioEdit(props: any) {
         fetch(url, postOptions)
             .then(response => response.json())
             .then(data => console.log(data));
+
+        if (cropSelecion)
+            handleSubmitCrop(cropSelecion);
+
     }
+
+    const handleSubmitCrop = (percentCrop: any) => {
+        const postOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ crop: percentCrop })
+        };
+        fetch(backendHost + '/api.php?crop=' + props.idimage, postOptions)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+            })
+    };
 
     return (
         <>
@@ -113,7 +109,7 @@ function AnnuncioEdit(props: any) {
                             </Form.Control>
                         </Form.Group>
                     </Form>
-                    <ImageEdit />
+                    <ImageEdit imageSrc={props.image_link} setCropSelection={setCropSelection} />
 
                 </Modal.Body>
                 <Modal.Footer>
