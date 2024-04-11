@@ -4,11 +4,12 @@ import { useRef, useState, useCallback, useEffect } from "react"
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
-import ReactCrop, { type Crop } from 'react-image-crop'
+import ReactCrop, { type Crop, PixelCrop, PercentCrop } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 
+const backendHost = 'https://balinona.synology.me/locandine_backend/'
+
 function useStateApiLazy(path: string, show: boolean) {
-    const backendHost = 'https://balinona.synology.me/locandine_backend/'
     const [item, setItem] = useState<any>([]);
 
     const fetchItems = useCallback(() => {
@@ -35,21 +36,32 @@ function ImageEdit(props: any) {
     })
 
     const imageRef = useRef<HTMLImageElement>(null)
-    const [croppedImageUrl, setCroppedImageUrl] = useState(null);
+    const [imageSrc, setImageSrc] = useState('https://fantautosoft.altervista.org/locandine/4283e47e50d7d556768dd379ecfd09428724fd53.jpg')
 
-    const onCropComplete = (crop: any) => {
+    const handleSubmit = (crop: PixelCrop, percentCrop: PercentCrop) => {
+        const postOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ crop: percentCrop })
+        };
+        fetch(backendHost + '/api.php?crop=xxxxx', postOptions)
+            .then(response => response.json())
+            .then(data => {
+                setImageSrc('https://balinona.synology.me/locandine_backend/example-cropped.jpg')
+                console.log(data)
+            })
+
+
     };
-
-    const src = 'https://fantautosoft.altervista.org/locandine/4283e47e50d7d556768dd379ecfd09428724fd53.jpg'
 
     return (
         <>
             <ReactCrop
                 crop={crop}
                 onChange={c => setCrop(c)}
-                onComplete={onCropComplete}>
+                onComplete={handleSubmit}>
 
-                <img ref={imageRef} src={src} />
+                <img ref={imageRef} src={imageSrc} />
             </ReactCrop>
         </>
     )
