@@ -82,7 +82,7 @@ function LocandinaEdit(props: any) {
 
       <Modal show={show} onHide={handleClose} animation={true}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit edizione</Modal.Title>
+          <Modal.Title>Edit edizione {props.item.idedizione}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
 

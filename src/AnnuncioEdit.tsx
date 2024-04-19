@@ -76,6 +76,8 @@ function AnnuncioEdit(props: any) {
 
     }
 
+    const handleDelete = () => { alert('not implemented yet') }
+
     const handleSubmitCrop = (percentCrop: any) => {
         const postOptions = {
             method: 'POST',
@@ -91,7 +93,9 @@ function AnnuncioEdit(props: any) {
 
     return (
         <>
-            {props.idimage > 0 && <Button variant="primary" onClick={handleShow}>Edit</Button>}&nbsp;
+            {props.idimage > 0 &&
+                <Button variant="primary" onClick={handleShow}>Edit</Button>
+            }&nbsp;
 
             <Modal show={show} onHide={handleClose} animation={true}>
                 <Modal.Header closeButton>
@@ -107,18 +111,18 @@ function AnnuncioEdit(props: any) {
                                     (<option key={index} value={edizione.idedizione}>{edizione.tipo} {edizione.versione} {edizione.tipografica ?? ''}</option>))
                                 }
                             </Form.Control>
+                            <Form.Label>ID</Form.Label>
+                            <Form.Control type="text" placeholder="idedizione" defaultValue={idedizione} onChange={(event) => { setIdedizione(event.target.value) }} />
+
                         </Form.Group>
                     </Form>
                     <ImageEdit imageSrc={props.image_link} setCropSelection={setCropSelection} />
 
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleSubmit}>
-                        Save Changes
-                    </Button>
+                    <Button variant="danger" onClick={handleDelete}>Delete</Button>
+                    <Button variant="secondary" onClick={handleClose}>Close</Button>
+                    <Button variant="primary" onClick={handleSubmit}>Save Changes</Button>
                 </Modal.Footer>
             </Modal>
         </>
