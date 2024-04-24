@@ -76,7 +76,21 @@ function AnnuncioEdit(props: any) {
 
     }
 
-    const handleDelete = () => { alert('not implemented yet') }
+    const handleDelete = () => {
+        // Simple POST request with a JSON body using fetch
+        if (window.confirm("Confermi cancellazione?")) {
+            //Logic to delete the item
+            setShow(false);
+            const postOptions = {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' }
+            };
+            fetch(url, postOptions)
+                .then(response => response.json())
+                .then(data => console.log(data));
+        }
+
+    }
 
     const handleSubmitCrop = (percentCrop: any) => {
         const postOptions = {
