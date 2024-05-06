@@ -92,6 +92,25 @@ function Bind(props) {
       });
   }
 
+  const createMovie = (item) => {
+    const post_data = {
+      "tmdb": item.tmdb,
+      "title": item.title,
+      "anno": parseInt(item.anno.substring(0, 4))
+    }
+    const postOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(post_data)
+    };
+    fetch('https://balinona.synology.me/locandine_backend/api.php?table=_movies', postOptions)
+      .then(response => response.json())
+      .then(data => {
+        alert(JSON.stringify(data, null, 2))
+        selectMovie(item)
+      });
+  }
+
   const selectMovie = (item) => {
     setEdizioni([])
     setSelectedEdizione([])
@@ -178,7 +197,8 @@ function Bind(props) {
                 <Button variant="info" size="sm" href={'/item/' + item.tmdb} target='_blank' rel='noreferrer'>
                   Link
                 </Button>&nbsp;
-                {(item.edizioni === '0' || !item.edizioni) && <Button variant="success" size="sm" onClick={() => createDefaultEdizione(item)}>Create Ed.</Button>}
+                {item.edizioni === '0' && <Button variant="success" size="sm" onClick={() => createDefaultEdizione(item)}>Create Ed.</Button>}
+                {!item.edizioni && <Button variant="success" size="sm" onClick={() => createMovie(item)}>Create Movie</Button>}
 
               </td>
               <td>{item.title}</td>
