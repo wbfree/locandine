@@ -107,7 +107,11 @@ function Bind(props) {
       .then(response => response.json())
       .then(data => {
         alert(JSON.stringify(data, null, 2))
-        selectMovie(item)
+        createDefaultEdizione(
+          {
+            idmovie: item.tmdb,
+            anno: parseInt(item.anno.substring(0, 4))
+          })
       });
   }
 
